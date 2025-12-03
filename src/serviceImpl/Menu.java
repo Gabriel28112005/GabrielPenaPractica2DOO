@@ -1,20 +1,23 @@
-package service;
+package serviceImpl;
 
 import java.util.Comparator;
 import java.util.Scanner;
 
+import exceptions.*;
 import models.*;
-
-import static models.Marca.*;
-
+import service.*;
 
 
-// FALTA HACER EXEPCIONES PERSONALIZADAS
+
+// FALTA HACER EXEPCIONES PERSONALIZADAS ; FALTA HACER CLASE "OPERACIONES" QUE HAGA EL BUSCARTELEVISOR DESDE ALLI Y NO DESDE EL MENU (LO MISMO CON EL RESTO DE OPERACIONES)
+// FALTA USAR OPTIONAL
+
 
 
 public class Menu {
     Scanner scanner = new Scanner(System.in);
     boolean salir = false;
+    Operaciones operaciones = new Operaciones();
 
     public void mostrarMenu(){
         while (!salir){
@@ -68,26 +71,29 @@ public class Menu {
 
     } //Fin de la función mostrarMenu
 
-    public void anadirMarca(){
-        try{
+    public void anadirMarca() throws ExcepcionAnadirMarca {
+        try {
             System.out.print("Ingrese el nombre de la marca: ");
             String nombreMarca = scanner.nextLine().toLowerCase().trim();
+
+            // Verificar si la marca ya existe
+            if (operaciones.listaMarcas.stream().anyMatch(marca -> marca.getNombre().equals(nombreMarca))) {
+                throw new ExcepcionAnadirMarca("La marca ya está registrada.");
+            }
 
             System.out.print("Ingrese el país de la marca: ");
             String paisMarca = scanner.nextLine().toLowerCase().trim();
 
-            scanner.nextLine(); //Se limpia buffer
-
             System.out.print("Ingrese la facturación de la marca: ");
             int facturacionMarca = scanner.nextInt();
-            if(facturacionMarca<0){
-                System.out.print("La facturación no puede ser negativa. Volviendo al menú...\n");
-                return;
+            if (facturacionMarca < 0) {
+                throw new ExcepcionAnadirMarca("La facturación no puede ser negativa.");
             }
 
-            Marca marca = new Marca(nombreMarca, paisMarca, facturacionMarca);
-            listaMarcas.add(marca);
-        }catch(Exception e){
+            operaciones.agregarMarca(nombreMarca, paisMarca, facturacionMarca);
+        } catch (ExcepcionAnadirMarca e) {
+            System.out.print("Error al agregar la marca: " + e.getMessage() + "\n");
+        } catch(Exception e){
             System.out.print("Error, no ha ingresado un valor válido. Volviendo al menú...\n");
         }
     } //Fin de la función anadirMarca
@@ -96,19 +102,16 @@ public class Menu {
 
 
 
-    private void anadirTelevisor(){
+    private void anadirTelevisor() throws ExcepcionAnadirTelevisor{
         try{
             System.out.print("Ingrese el nombre de la marca del televisor: ");
             String nombreMarcaTelevisor = scanner.nextLine().toLowerCase().trim();
 
-
-
-            if(listaMarcas.stream().anyMatch(marca -> marca.getNombre().equals(nombreMarcaTelevisor))){
+            if(operaciones.listaMarcas.stream().anyMatch(marca -> marca.getNombre().equals(nombreMarcaTelevisor))){
                 System.out.print("Ingrese el precio del televisor: ");
                 double precioTelevisor = scanner.nextDouble();
                 if(precioTelevisor<0){
-                    System.out.print("El precio no puede ser negativo. Volviendo al menú...\n");
-                    return;
+                    throw new ExcepcionAnadirTelevisor("El precio no puede ser negativo. Volviendo al menú...\n");
                 }
 
 
@@ -121,24 +124,26 @@ public class Menu {
                 System.out.print("Ingrese el tamaño en pulgadas del televisor: ");
                 int tamanoPulgadasTelevisor = scanner.nextInt();
                 if(tamanoPulgadasTelevisor<0){
-                    System.out.print("El tamaño en pulgadas no puede ser negativo. Volviendo al menú...\n");
-                    return;
+                    throw new ExcepcionAnadirTelevisor("El tamaño en pulgadas no puede ser negativo. Volviendo al menú...\n");
                 }
 
                 TipoPantalla tipoPantallaTelevisor = TipoPantalla.valueOf(pantallaTelevisor);
-                Marca marcaTelevisor = listaMarcas.stream()
+                Marca marcaTelevisor = operaciones.listaMarcas.stream()
                         .filter(marca -> marca.getNombre().equals(nombreMarcaTelevisor))
                         .findFirst()
                         .orElse(null);
 
-                Televisor televisor = new Televisor(precioTelevisor, marcaTelevisor, nombreTelevisor, tipoPantallaTelevisor, tamanoPulgadasTelevisor);
-                Dispositivo.articulos.add(televisor);
+                operaciones.agregarTelevisor(precioTelevisor, marcaTelevisor, nombreTelevisor, tipoPantallaTelevisor, tamanoPulgadasTelevisor);
 
             } else{
-                System.out.print("La marca ingresada no está registrada. Volviendo al menú...\n");
+                throw new ExcepcionAnadirTelevisor("La marca ingresada no está registrada.");
+
             }
 
-        }catch (Exception e){
+        }catch (ExcepcionAnadirTelevisor e){
+            throw new ExcepcionAnadirTelevisor("Error al agregar el televisor: " + e.getMessage());
+        }
+        catch (Exception e){
             System.out.print("Error, no ha ingresado un valor válido. Volviendo al menú...\n");
         }
 
@@ -148,17 +153,16 @@ public class Menu {
 
 
 
-    private void anadirMovil(){
+    private void anadirMovil() throws ExcepcionAnadirMovil{
         try{
             System.out.print("Ingrese el nombre de la marca del móvil: ");
             String nombreMarcaMovil = scanner.nextLine().toLowerCase().trim();
 
-            if(listaMarcas.stream().anyMatch(marca -> marca.getNombre().equals(nombreMarcaMovil))) {
+            if(operaciones.listaMarcas.stream().anyMatch(marca -> marca.getNombre().equals(nombreMarcaMovil))) {
                 System.out.print("Ingrese el precio del móvil: ");
                 double precioMovil = scanner.nextDouble();
                 if(precioMovil<0){
-                    System.out.print("El precio no puede ser negativo. Volviendo al menú...\n");
-                    return;
+                    throw new ExcepcionAnadirMovil("El precio no puede ser negativo. Volviendo al menú...\n");
                 }
 
                 System.out.print("Ingrese el nombre del móvil: ");
@@ -170,23 +174,20 @@ public class Menu {
                 System.out.print("Ingrese el tamaño de la RAM del móvil (en GB): ");
                 int tamanoRamMovil = scanner.nextInt();
                 if(tamanoRamMovil<0){
-                    System.out.print("El tamaño de la RAM no puede ser negativo. Volviendo al menú...\n");
-                    return;
+                    throw new ExcepcionAnadirMovil("El tamaño de la RAM no puede ser negativo. Volviendo al menú...\n");
                 }
 
                 TipoSistemaOperativo tipoSistemaOperativoMovil = TipoSistemaOperativo.valueOf(sistemaOperativoMovil);
 
-                Marca marcaMovil = listaMarcas.stream()
+                Marca marcaMovil = operaciones.listaMarcas.stream()
                         .filter(marca -> marca.getNombre().equals(nombreMarcaMovil))
                         .findFirst()
                         .orElse(null);
 
-                Movil movil = new Movil(precioMovil, marcaMovil, nombreMovil, tipoSistemaOperativoMovil, tamanoRamMovil);
-
-                Dispositivo.articulos.add(movil);
+                operaciones.agregarMovil(precioMovil, marcaMovil, nombreMovil, tipoSistemaOperativoMovil, tamanoRamMovil);
 
             } else{
-                System.out.print("La marca ingresada no está registrada. Volviendo al menú...\n");
+                throw new ExcepcionAnadirMovil("La marca ingresada no está registrada. Volviendo al menú...\n");
             }
 
         }catch(Exception e){
@@ -207,8 +208,8 @@ public class Menu {
             String paisMarcaBuscar = scanner.nextLine().toLowerCase().trim();
 
 
-            if(listaMarcas.stream().anyMatch(marca -> marca.getNombre().equals(nombreMarcaBuscar) && marca.getPais().equals(paisMarcaBuscar))){
-                Marca marcaBuscada = listaMarcas.stream()
+            if(operaciones.listaMarcas.stream().anyMatch(marca -> marca.getNombre().equals(nombreMarcaBuscar) && marca.getPais().equals(paisMarcaBuscar))){
+                Marca marcaBuscada = operaciones.listaMarcas.stream()
                         .filter(marca -> marca.getNombre().equals(nombreMarcaBuscar) && marca.getPais().equals(paisMarcaBuscar))
                         .findFirst()
                         .orElse(null);
@@ -241,9 +242,9 @@ public class Menu {
             }
 
             System.out.print("Ingrese el nombre de la marca del televisor a buscar: ");
-            Marca marcaTelevisorBuscar = Dispositivo.articulos.stream()
-                    .filter(articulo -> articulo instanceof Televisor && ((Televisor) articulo).getPrecio() == precioTelevisorBuscar)
-                    .map(articulo -> ((Televisor)articulo).getMarca())
+            Marca marcaTelevisorBuscar = operaciones.listaArticulos.stream()
+                    .filter(articulo -> articulo instanceof Televisor && articulo.getPrecio() == precioTelevisorBuscar)
+                    .map(articulo -> articulo.getMarca())
                     .findFirst()
                     .orElse(null);
 
@@ -267,14 +268,14 @@ public class Menu {
 
             Televisor televisorBuscado = new Televisor(precioTelevisorBuscar, marcaTelevisorBuscar, nombreTelevisorBuscar, tipoPantallaTelevisorBuscar, tamanoPulgadasTelevisorBuscar);
 
-            if(Dispositivo.articulos.contains(televisorBuscado)){
+            if(operaciones.listaArticulos.contains(televisorBuscado)){
                 System.out.print("Televisor encontrado:\n" + televisorBuscado + "\n");
             } else{
                 System.out.print("El televisor ingresado no está registrado. Volviendo al menú...\n");
             }
 
             /*
-            * Televisor televisorBuscado = Dispositivo.articulos.stream()
+            * Televisor televisorBuscado = articulos.stream()
                     .filter(articulo -> articulo instanceof Televisor)
                     .map(articulo -> (Televisor) articulo)
                     .filter(televisor -> televisor.getPrecio() == precioTelevisorBuscar &&
@@ -308,9 +309,9 @@ public class Menu {
             }
 
             System.out.print("Ingrese el nombre de la marca del móvil a buscar: ");
-            Marca marcaMovilBuscar = Dispositivo.articulos.stream()
-                    .filter(articulo -> articulo instanceof Movil && ((Movil) articulo).getPrecio() == precioMovilBuscar)
-                    .map(articulo -> ((Movil)articulo).getMarca())
+            Marca marcaMovilBuscar = operaciones.listaArticulos.stream()
+                    .filter(articulo -> articulo instanceof Movil && articulo.getPrecio() == precioMovilBuscar)
+                    .map(articulo -> articulo.getMarca())
                     .findFirst()
                     .orElse(null);
 
@@ -329,8 +330,14 @@ public class Menu {
             int tamanoRamMovilBuscar = scanner.nextInt();
             if(tamanoRamMovilBuscar<0){
                 System.out.print("El tamaño de la RAM no puede ser negativo. Volviendo al menú...\n");
-                return;
+
             }
+
+
+
+
+
+
 
 
 
@@ -346,15 +353,15 @@ public class Menu {
 
 
     private void listarMarcas(){
-        if(listaMarcas.isEmpty()){
+        if(operaciones.listaMarcas.isEmpty()){
             System.out.print("No hay marcas registradas.\n");
         } else{
-            listaMarcas.sort(Comparator.comparing(Marca::getFacturacion).reversed()); //Ordenar listaMarcas por facturación de forma descendente
+            operaciones.listaMarcas.sort(Comparator.comparing(Marca::getFacturacion).reversed()); //Ordenar listaMarcas por facturación de forma descendente
 
             //  ¿PARA ORDENARLO PUEDO USAR SORT?
 
             System.out.print("Listado de marcas registradas:\n");
-            listaMarcas.stream().forEach(marca -> System.out.print(marca + "\n"));
+            operaciones.listaMarcas.stream().forEach(marca -> System.out.print(marca + "\n"));
         }
     } //Fin de la función listarMarcas
 
@@ -363,13 +370,14 @@ public class Menu {
 
 
     private void listarArticulos(){
-        if(Dispositivo.articulos.isEmpty()){
+        if(operaciones.listaArticulos.isEmpty()){
             System.out.print("No hay artículos registrados.\n");
         } else{
-            Dispositivo.articulos.sort(Comparator.comparing(Dispositivo::getPrecio).reversed()); //Ordenar listaArticulos por precio de forma ascendente
+
+            operaciones.listaArticulos.sort(Comparator.comparing(Dispositivo::getPrecio).reversed()); //Ordenar listaArticulos por precio de forma ascendente
 
             System.out.print("Listado de artículos registrados:\n");
-            Dispositivo.articulos.stream().forEach(articulo -> System.out.print(articulo + "\n"));
+            operaciones.listaArticulos.stream().forEach(articulo -> System.out.print(articulo + "\n"));
         }
     } //Fin de la función listarArticulos
 

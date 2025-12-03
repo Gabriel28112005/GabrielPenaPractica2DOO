@@ -1,4 +1,5 @@
 package models;
 
-public class TipoPantalla {
+public enum TipoPantalla {
+    LED, QLED, OLED, QNED
 }
