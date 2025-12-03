@@ -92,7 +92,7 @@ public class Menu {
 
             operaciones.agregarMarca(nombreMarca, paisMarca, facturacionMarca);
         } catch (ExcepcionAnadirMarca e) {
-            System.out.print("Error al agregar la marca: " + e.getMessage() + "\n");
+            System.out.print("Error al añadir la marca: " + e.getMessage() + "\n");
         } catch(Exception e){
             System.out.print("Error, no ha ingresado un valor válido. Volviendo al menú...\n");
         }
@@ -141,7 +141,7 @@ public class Menu {
             }
 
         }catch (ExcepcionAnadirTelevisor e){
-            throw new ExcepcionAnadirTelevisor("Error al agregar el televisor: " + e.getMessage());
+            throw new ExcepcionAnadirTelevisor("Error al añadir el televisor: " + e.getMessage());
         }
         catch (Exception e){
             System.out.print("Error, no ha ingresado un valor válido. Volviendo al menú...\n");
@@ -190,6 +190,8 @@ public class Menu {
                 throw new ExcepcionAnadirMovil("La marca ingresada no está registrada. Volviendo al menú...\n");
             }
 
+        }catch (ExcepcionAnadirMovil e){
+            throw new ExcepcionAnadirMovil("Error al añadir el movil: " + e.getMessage());
         }catch(Exception e){
             System.out.print("Error, no ha ingresado un valor válido. Volviendo al menú...\n");
         }
@@ -199,7 +201,7 @@ public class Menu {
 
 
 
-    private void buscarMarca(){
+    private void buscarMarca() throws ExcepcionBuscarMarca{
         try{
             System.out.print("Ingrese el nombre de la marca a buscar: ");
             String nombreMarcaBuscar = scanner.nextLine().toLowerCase().trim();
@@ -209,41 +211,34 @@ public class Menu {
 
 
             if(operaciones.listaMarcas.stream().anyMatch(marca -> marca.getNombre().equals(nombreMarcaBuscar) && marca.getPais().equals(paisMarcaBuscar))){
-                Marca marcaBuscada = operaciones.listaMarcas.stream()
-                        .filter(marca -> marca.getNombre().equals(nombreMarcaBuscar) && marca.getPais().equals(paisMarcaBuscar))
-                        .findFirst()
-                        .orElse(null);
-                System.out.print("Marca encontrada:\n" + marcaBuscada + "\n");
+                operaciones.busquedaMarca(nombreMarcaBuscar,paisMarcaBuscar);
             } else{
-                System.out.print("La marca ingresada no está registrada. Volviendo al menú...\n");
-
+                throw new ExcepcionBuscarMarca("La marca ingresada no está registrada. Volviendo al menú...\n");
             }
-        }catch(Exception e){
+        } catch (ExcepcionBuscarMarca e){
+            throw new ExcepcionBuscarMarca("Error al buscar la marca: " + e.getMessage());
+        } catch (Exception e){
             System.out.print("Error, no ha ingresado un valor válido. Volviendo al menú...\n");
         }
-
-
-
-
-
     } //Fin de la función buscarMarca
 
 
 
 
 
-    private void buscarTelevisor(){
+    private void buscarTelevisor() throws ExcepcionBuscarTelevisor{
         try{
             System.out.print("Ingrese el precio del televisor a buscar: ");
             double precioTelevisorBuscar = scanner.nextDouble();
             if(precioTelevisorBuscar<0){
-                System.out.print("El precio no puede ser negativo. Volviendo al menú...\n");
-                return;
+                throw new ExcepcionBuscarTelevisor("El precio no puede ser negativo. Volviendo al menú...\n");
             }
 
             System.out.print("Ingrese el nombre de la marca del televisor a buscar: ");
+            String nombreMarcaBuscar = scanner.nextLine();
+
             Marca marcaTelevisorBuscar = operaciones.listaArticulos.stream()
-                    .filter(articulo -> articulo instanceof Televisor && articulo.getPrecio() == precioTelevisorBuscar)
+                    .filter(articulo -> articulo instanceof Televisor && articulo.getMarca().equals(nombreMarcaBuscar))
                     .map(articulo -> articulo.getMarca())
                     .findFirst()
                     .orElse(null);
@@ -255,39 +250,21 @@ public class Menu {
             String pantallaTelevisorBuscar = scanner.next().toUpperCase().trim();
             TipoPantalla tipoPantallaTelevisorBuscar = TipoPantalla.valueOf(pantallaTelevisorBuscar);
             if(!tipoPantallaTelevisorBuscar.equals("LED") && !tipoPantallaTelevisorBuscar.equals("OLED") && !tipoPantallaTelevisorBuscar.equals("QLED")){
-                System.out.print("El tipo de pantalla ingresado no es válido. Volviendo al menú...\n");
-                return;
+                throw new ExcepcionBuscarTelevisor("El tipo de pantalla ingresado no es válido. Volviendo al menú...\n");
             }
 
             System.out.print("Ingrese el tamaño en pulgadas del televisor a buscar: ");
             int tamanoPulgadasTelevisorBuscar = scanner.nextInt();
             if(tamanoPulgadasTelevisorBuscar<0){
-                System.out.print("El tamaño en pulgadas no puede ser negativo. Volviendo al menú...\n");
-                return;
+                throw new ExcepcionBuscarTelevisor("El tamaño en pulgadas no puede ser negativo. Volviendo al menú...\n");
+            } else if(tamanoPulgadasTelevisorBuscar==0){
+                throw new ExcepcionBuscarTelevisor("El tamaño en pulgadas del televisor no puede ser 0. Volviendo al menú...\n");
             }
 
-            Televisor televisorBuscado = new Televisor(precioTelevisorBuscar, marcaTelevisorBuscar, nombreTelevisorBuscar, tipoPantallaTelevisorBuscar, tamanoPulgadasTelevisorBuscar);
+            operaciones.encontrarTelevisor(precioTelevisorBuscar, marcaTelevisorBuscar, nombreTelevisorBuscar, tipoPantallaTelevisorBuscar, tamanoPulgadasTelevisorBuscar);
 
-            if(operaciones.listaArticulos.contains(televisorBuscado)){
-                System.out.print("Televisor encontrado:\n" + televisorBuscado + "\n");
-            } else{
-                System.out.print("El televisor ingresado no está registrado. Volviendo al menú...\n");
-            }
-
-            /*
-            * Televisor televisorBuscado = articulos.stream()
-                    .filter(articulo -> articulo instanceof Televisor)
-                    .map(articulo -> (Televisor) articulo)
-                    .filter(televisor -> televisor.getPrecio() == precioTelevisorBuscar &&
-                            televisor.getMarca().equals(marcaTelevisorBuscar) &&
-                            televisor.getNombre().equals(nombreTelevisorBuscar) &&
-                            televisor.getTipoPantalla() == tipoPantallaTelevisorBuscar &&
-                            televisor.getTamanoPulgadas() == tamanoPulgadasTelevisorBuscar)
-                    .findFirst()
-                    .orElse(null);
-            *
-            * */
-
+        } catch (ExcepcionBuscarTelevisor e){
+            throw new ExcepcionBuscarTelevisor("Error al buscar el televisor: " + e.getMessage());
         } catch (Exception e) {
             System.out.print("Error en función buscarTelevisor. Volviendo al menú...\n");
         }
@@ -298,19 +275,19 @@ public class Menu {
 
 
 
-    private void buscarMovil(){
+    private void buscarMovil() throws ExcepcionBuscarMovil{
         try{
 
             System.out.print("Ingrese el precio del móvil a buscar: ");
             double precioMovilBuscar = scanner.nextDouble();
             if(precioMovilBuscar<0){
-                System.out.print("El precio no puede ser negativo. Volviendo al menú...\n");
-                return;
+                throw new ExcepcionBuscarMovil("El precio no puede ser negativo. Volviendo al menú...\n");
             }
 
             System.out.print("Ingrese el nombre de la marca del móvil a buscar: ");
+            String nombreMarcaBuscar = scanner.nextLine();
             Marca marcaMovilBuscar = operaciones.listaArticulos.stream()
-                    .filter(articulo -> articulo instanceof Movil && articulo.getPrecio() == precioMovilBuscar)
+                    .filter(articulo -> articulo instanceof Movil && articulo.getMarca().equals(nombreMarcaBuscar))
                     .map(articulo -> articulo.getMarca())
                     .findFirst()
                     .orElse(null);
@@ -322,27 +299,23 @@ public class Menu {
             String sistemaOperativoMovilBuscar = scanner.nextLine().toUpperCase().trim();
             TipoSistemaOperativo tipoSistemaOperativoMovilBuscar = TipoSistemaOperativo.valueOf(sistemaOperativoMovilBuscar);
             if(!tipoSistemaOperativoMovilBuscar.equals("ANDROID") && !tipoSistemaOperativoMovilBuscar.equals("IOS")){
-                System.out.print("El sistema operativo ingresado no es válido. Volviendo al menú...\n");
-                return;
+                throw new ExcepcionBuscarMovil("El sistema operativo ingresado no es válido. Volviendo al menú...\n");
             }
 
             System.out.print("Ingrese el tamaño de la RAM del móvil a buscar (en GB): ");
             int tamanoRamMovilBuscar = scanner.nextInt();
             if(tamanoRamMovilBuscar<0){
-                System.out.print("El tamaño de la RAM no puede ser negativo. Volviendo al menú...\n");
-
+                throw new ExcepcionBuscarMovil("El tamaño de la RAM no puede ser negativo. Volviendo al menú...\n");
+            } else if (tamanoRamMovilBuscar == 0){
+                throw new ExcepcionBuscarMovil("El tamaño de la RAM no puede ser 0. VOlviendo al menú...\n");
             }
 
+            operaciones.busquedaMovil(precioMovilBuscar, marcaMovilBuscar, nombreMovilBuscar, tipoSistemaOperativoMovilBuscar, tamanoRamMovilBuscar);
 
-
-
-
-
-
-
-
-
-        } catch (Exception e) {
+        } catch( ExcepcionBuscarMovil e){
+            System.out.print("Error al buscar el televisor: " + e.getMessage());
+        }
+        catch (Exception e) {
             System.out.print("Error en función buscarMovil. Volviendo al menú...\n");
         }
 
