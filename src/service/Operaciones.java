@@ -5,6 +5,7 @@ import exceptions.ExcepcionBuscarTelevisor;
 import models.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Operaciones {
     public ArrayList<Dispositivo> listaArticulos = new ArrayList<>();
@@ -67,10 +68,16 @@ public class Operaciones {
     }
 
 
-    public void mostrarDispositivos(ArrayList<Dispositivo> ListaArticulos){
-        for (Dispositivo dispositivo : ListaArticulos) {
-            System.out.println("Nombre: " + dispositivo.getNombre() + "\n Marca: " + dispositivo.getMarca().getNombre() + "\n Precio: " + dispositivo.getPrecio() + "\n");
-        }
+    public void mostrarMarcas(){
+        listaMarcas.sort(Comparator.comparing(Marca::getFacturacion).reversed()); //Ordenar listaMarcas por facturación de forma descendente
+        System.out.println("Listado de marcas registradas:\n");
+        listaMarcas.stream().forEach(marca -> System.out.print(marca + "\n"));
+    }
+
+    public void mostrarArticulos(){
+        listaArticulos.sort(Comparator.comparing(Dispositivo::getPrecio).reversed()); //Ordenar listaArticulos por precio de forma ascendente
+        System.out.print("Listado de artículos registrados:\n");
+        listaArticulos.stream().forEach(articulo -> System.out.print(articulo + "\n"));
     }
 
 

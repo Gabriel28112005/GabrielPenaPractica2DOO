@@ -1,6 +1,5 @@
 package serviceImpl;
 
-import java.util.Comparator;
 import java.util.Scanner;
 
 import exceptions.*;
@@ -9,7 +8,6 @@ import service.*;
 
 
 
-// FALTA HACER EXEPCIONES PERSONALIZADAS ; FALTA HACER CLASE "OPERACIONES" QUE HAGA EL BUSCARTELEVISOR DESDE ALLI Y NO DESDE EL MENU (LO MISMO CON EL RESTO DE OPERACIONES)
 // FALTA USAR OPTIONAL
 
 
@@ -92,7 +90,7 @@ public class Menu {
 
             operaciones.agregarMarca(nombreMarca, paisMarca, facturacionMarca);
         } catch (ExcepcionAnadirMarca e) {
-            System.out.print("Error al añadir la marca: " + e.getMessage() + "\n");
+            throw new ExcepcionAnadirMarca("Error al añadir la marca: " + e.getMessage() + "\n");
         } catch(Exception e){
             System.out.print("Error, no ha ingresado un valor válido. Volviendo al menú...\n");
         }
@@ -238,10 +236,12 @@ public class Menu {
             String nombreMarcaBuscar = scanner.nextLine();
 
             Marca marcaTelevisorBuscar = operaciones.listaArticulos.stream()
-                    .filter(articulo -> articulo instanceof Televisor && articulo.getMarca().equals(nombreMarcaBuscar))
+                    .filter(articulo -> articulo instanceof Televisor && articulo.getMarca().getNombre().equals(nombreMarcaBuscar))
                     .map(articulo -> articulo.getMarca())
                     .findFirst()
                     .orElse(null);
+
+
 
             System.out.print("Ingrese el nombre del televisor a buscar: ");
             String nombreTelevisorBuscar = scanner.nextLine().toLowerCase().trim();
@@ -249,7 +249,7 @@ public class Menu {
             System.out.print("Ingrese el tipo de pantalla del televisor a buscar (LED, OLED, QLED): ");
             String pantallaTelevisorBuscar = scanner.next().toUpperCase().trim();
             TipoPantalla tipoPantallaTelevisorBuscar = TipoPantalla.valueOf(pantallaTelevisorBuscar);
-            if(!tipoPantallaTelevisorBuscar.equals("LED") && !tipoPantallaTelevisorBuscar.equals("OLED") && !tipoPantallaTelevisorBuscar.equals("QLED")){
+            if(tipoPantallaTelevisorBuscar != TipoPantalla.LED && tipoPantallaTelevisorBuscar!=TipoPantalla.OLED && tipoPantallaTelevisorBuscar != TipoPantalla.QLED){
                 throw new ExcepcionBuscarTelevisor("El tipo de pantalla ingresado no es válido. Volviendo al menú...\n");
             }
 
@@ -266,7 +266,7 @@ public class Menu {
         } catch (ExcepcionBuscarTelevisor e){
             throw new ExcepcionBuscarTelevisor("Error al buscar el televisor: " + e.getMessage());
         } catch (Exception e) {
-            System.out.print("Error en función buscarTelevisor. Volviendo al menú...\n");
+            System.out.print("Error general en función buscarTelevisor. Volviendo al menú...\n");
         }
 
     } //Fin de la función buscarTelevisor
@@ -277,17 +277,18 @@ public class Menu {
 
     private void buscarMovil() throws ExcepcionBuscarMovil{
         try{
-
             System.out.print("Ingrese el precio del móvil a buscar: ");
             double precioMovilBuscar = scanner.nextDouble();
             if(precioMovilBuscar<0){
                 throw new ExcepcionBuscarMovil("El precio no puede ser negativo. Volviendo al menú...\n");
             }
 
+            scanner.nextLine(); //Limpiar buffer
+
             System.out.print("Ingrese el nombre de la marca del móvil a buscar: ");
             String nombreMarcaBuscar = scanner.nextLine();
             Marca marcaMovilBuscar = operaciones.listaArticulos.stream()
-                    .filter(articulo -> articulo instanceof Movil && articulo.getMarca().equals(nombreMarcaBuscar))
+                    .filter(articulo -> articulo instanceof Movil && articulo.getMarca().getNombre().equals(nombreMarcaBuscar))
                     .map(articulo -> articulo.getMarca())
                     .findFirst()
                     .orElse(null);
@@ -298,7 +299,7 @@ public class Menu {
             System.out.print("Ingrese el sistema operativo del móvil a buscar (ANDROID, IOS): ");
             String sistemaOperativoMovilBuscar = scanner.nextLine().toUpperCase().trim();
             TipoSistemaOperativo tipoSistemaOperativoMovilBuscar = TipoSistemaOperativo.valueOf(sistemaOperativoMovilBuscar);
-            if(!tipoSistemaOperativoMovilBuscar.equals("ANDROID") && !tipoSistemaOperativoMovilBuscar.equals("IOS")){
+            if(tipoSistemaOperativoMovilBuscar!= TipoSistemaOperativo.Android && tipoSistemaOperativoMovilBuscar != TipoSistemaOperativo.iOS){
                 throw new ExcepcionBuscarMovil("El sistema operativo ingresado no es válido. Volviendo al menú...\n");
             }
 
@@ -313,7 +314,7 @@ public class Menu {
             operaciones.busquedaMovil(precioMovilBuscar, marcaMovilBuscar, nombreMovilBuscar, tipoSistemaOperativoMovilBuscar, tamanoRamMovilBuscar);
 
         } catch( ExcepcionBuscarMovil e){
-            System.out.print("Error al buscar el televisor: " + e.getMessage());
+            throw new ExcepcionBuscarMovil("Error al buscar el movil: " + e.getMessage());
         }
         catch (Exception e) {
             System.out.print("Error en función buscarMovil. Volviendo al menú...\n");
@@ -325,16 +326,11 @@ public class Menu {
 
 
 
-    private void listarMarcas(){
+    private void listarMarcas() throws ExcepcionListarMarcas {
         if(operaciones.listaMarcas.isEmpty()){
-            System.out.print("No hay marcas registradas.\n");
+            throw new ExcepcionListarMarcas("No hay marcas registradas.\n");
         } else{
-            operaciones.listaMarcas.sort(Comparator.comparing(Marca::getFacturacion).reversed()); //Ordenar listaMarcas por facturación de forma descendente
-
-            //  ¿PARA ORDENARLO PUEDO USAR SORT?
-
-            System.out.print("Listado de marcas registradas:\n");
-            operaciones.listaMarcas.stream().forEach(marca -> System.out.print(marca + "\n"));
+            operaciones.mostrarMarcas();
         }
     } //Fin de la función listarMarcas
 
@@ -342,15 +338,11 @@ public class Menu {
 
 
 
-    private void listarArticulos(){
+    private void listarArticulos() throws ExcepcionListarArticulos{
         if(operaciones.listaArticulos.isEmpty()){
-            System.out.print("No hay artículos registrados.\n");
+            throw new ExcepcionListarArticulos("No hay artículos registrados.\n");
         } else{
-
-            operaciones.listaArticulos.sort(Comparator.comparing(Dispositivo::getPrecio).reversed()); //Ordenar listaArticulos por precio de forma ascendente
-
-            System.out.print("Listado de artículos registrados:\n");
-            operaciones.listaArticulos.stream().forEach(articulo -> System.out.print(articulo + "\n"));
+            operaciones.mostrarArticulos();
         }
     } //Fin de la función listarArticulos
 

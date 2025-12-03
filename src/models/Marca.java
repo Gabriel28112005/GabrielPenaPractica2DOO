@@ -1,7 +1,5 @@
 package models;
 
-import java.util.ArrayList;
-
 public class Marca {
     protected String nombre, pais;
     protected int facturacion;

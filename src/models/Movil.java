@@ -1,8 +1,8 @@
 package models;
 
 public class Movil extends Dispositivo {
-    private TipoSistemaOperativo sistemaOperativo;
-    private int tamanoRAM;
+    private final TipoSistemaOperativo sistemaOperativo;
+    private final int tamanoRAM;
 
     public Movil(double precio, Marca marca, String nombre, TipoSistemaOperativo sistemaOperativo, int tamanoRAM) {
         super(precio, marca, nombre);
@@ -16,10 +16,6 @@ public class Movil extends Dispositivo {
 
     public int getTamanoRAM() {
         return tamanoRAM;
-    }
-
-    public Marca getMarca(){
-        return marca;
     }
 
     @Override

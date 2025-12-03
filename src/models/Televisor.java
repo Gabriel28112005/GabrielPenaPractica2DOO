@@ -1,8 +1,8 @@
 package models;
 
 public class Televisor extends Dispositivo{
-    private TipoPantalla tipoPantalla;
-    private int tamanoPulgadas;
+    private final TipoPantalla tipoPantalla;
+    private final int tamanoPulgadas;
 
     public Televisor(double precio, Marca marca, String nombre, TipoPantalla tipoPantalla, int tamanoPulgadas) {
         super(precio, marca, nombre);
@@ -12,14 +12,6 @@ public class Televisor extends Dispositivo{
 
     public TipoPantalla getTipoPantalla() {
         return tipoPantalla;
-    }
-
-    public Marca getMarca(){
-        return marca;
-    }
-
-    public String getNombre(){
-        return nombre;
     }
 
     public int getTamanoPulgadas() {
