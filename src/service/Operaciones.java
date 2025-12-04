@@ -11,12 +11,10 @@ public class Operaciones {
     public ArrayList<Dispositivo> listaArticulos = new ArrayList<>();
     public ArrayList<Marca> listaMarcas = new ArrayList<>();
 
-
     public void agregarMarca(String nombreMarca, String paisMarca, int facturacionMarca){
         Marca marca = new Marca(nombreMarca, paisMarca, facturacionMarca);
         listaMarcas.add(marca);
     }
-
 
     public void agregarTelevisor(double precioTelevisor, Marca marcaTelevisor, String nombreTelevisor, TipoPantalla tipoPantallaTelevisor, int tamanoPulgadasTelevisor){
         Televisor televisor = new Televisor(precioTelevisor, marcaTelevisor, nombreTelevisor, tipoPantallaTelevisor, tamanoPulgadasTelevisor);
@@ -55,7 +53,6 @@ public class Operaciones {
         }
     }
 
-
     public void busquedaMovil(double precioMovilBuscar, Marca marcaMovilBuscar, String nombreMovilBuscar, TipoSistemaOperativo tipoSistemaOperativoMovilBuscar, int tamanoRamMovilBuscar) throws ExcepcionBuscarMovil {
         Movil movilBuscado = new Movil(precioMovilBuscar, marcaMovilBuscar, nombreMovilBuscar, tipoSistemaOperativoMovilBuscar, tamanoRamMovilBuscar);
 
@@ -66,7 +63,6 @@ public class Operaciones {
         }
 
     }
-
 
     public void mostrarMarcas(){
         listaMarcas.sort(Comparator.comparing(Marca::getFacturacion).reversed()); //Ordenar listaMarcas por facturación de forma descendente
@@ -79,8 +75,5 @@ public class Operaciones {
         System.out.print("Listado de artículos registrados:\n");
         listaArticulos.stream().forEach(articulo -> System.out.print(articulo + "\n"));
     }
-
-
-
 
 } //Fin de la clase Operaciones
