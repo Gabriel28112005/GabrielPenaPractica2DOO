@@ -82,7 +82,7 @@ public class Menu {
 
             // Verificar si la marca ya existe
             if (operaciones.listaMarcas.stream().anyMatch(marca -> marca.getNombre().equals(nombreMarca))) {
-                throw new ExcepcionAnadirMarca("La marca ya está registrada.");
+                throw new ExcepcionAnadirMarca("La marca ya está registrada.\n\n");
             }
 
             System.out.print("Ingrese el país de la marca: ");
@@ -91,17 +91,17 @@ public class Menu {
             System.out.print("Ingrese la facturación de la marca: ");
             int facturacionMarca = scanner.nextInt();
             if (facturacionMarca < 0) {
-                throw new ExcepcionAnadirMarca("La facturación no puede ser negativa.");
+                throw new ExcepcionAnadirMarca("La facturación no puede ser negativa.\n\n");
             }
 
             operaciones.agregarMarca(nombreMarca, paisMarca, facturacionMarca);
 
         } catch (ExcepcionAnadirMarca e) {
-            throw new ExcepcionAnadirMarca("Error al añadir la marca: " + e.getMessage() + "\n");
+            throw new ExcepcionAnadirMarca("\nError al añadir la marca: " + e.getMessage());
         } catch(Exception e){
-            System.out.print("Error, no ha ingresado un valor válido. Volviendo al menú...\n");
+            System.out.println("\nError, no ha ingresado un valor válido. Volviendo al menú...\n");
         }
-    } //Fin de la función anadirMarca
+    } //Fin de la función anadirMarca. Opción 1 del menú
 
     private void anadirTelevisor() throws ExcepcionAnadirTelevisor{
         try{
@@ -112,7 +112,7 @@ public class Menu {
                 System.out.print("Ingrese el precio del televisor: ");
                 double precioTelevisor = scanner.nextDouble();
                 if(precioTelevisor<0){
-                    throw new ExcepcionAnadirTelevisor("El precio no puede ser negativo. Volviendo al menú...\n");
+                    throw new ExcepcionAnadirTelevisor("El precio no puede ser negativo. Volviendo al menú...\n\n");
                 }
 
 
@@ -125,9 +125,9 @@ public class Menu {
                 System.out.print("Ingrese el tamaño en pulgadas del televisor: ");
                 int tamanoPulgadasTelevisor = scanner.nextInt();
                 if(tamanoPulgadasTelevisor<0){
-                    throw new ExcepcionAnadirTelevisor("El tamaño en pulgadas no puede ser negativo. Volviendo al menú...\n");
+                    throw new ExcepcionAnadirTelevisor("El tamaño en pulgadas no puede ser negativo. Volviendo al menú...\n\n");
                 } else if (tamanoPulgadasTelevisor==0){
-                    throw new ExcepcionAnadirTelevisor("El tamaño en pulgadas del televisor no puede ser 0. Volviendo al menú...\n");
+                    throw new ExcepcionAnadirTelevisor("El tamaño en pulgadas del televisor no puede ser 0. Volviendo al menú...\n\n");
                 }
 
                 TipoPantalla tipoPantallaTelevisor = TipoPantalla.valueOf(pantallaTelevisor);
@@ -139,19 +139,17 @@ public class Menu {
                 operaciones.agregarTelevisor(precioTelevisor, marcaTelevisor, nombreTelevisor, tipoPantallaTelevisor, tamanoPulgadasTelevisor);
 
             } else{
-                throw new ExcepcionAnadirTelevisor("La marca ingresada no está registrada.");
+                throw new ExcepcionAnadirTelevisor("La marca ingresada no está registrada.\n\n");
             }
 
         }catch (ExcepcionAnadirTelevisor e){
-            throw new ExcepcionAnadirTelevisor("Error al añadir el televisor: " + e.getMessage());
+            throw new ExcepcionAnadirTelevisor("\nError al añadir el televisor: " + e.getMessage());
         }
         catch (Exception e){
-            System.out.print("Error, no ha ingresado un valor válido. Volviendo al menú...\n");
+            System.out.println("Error, no ha ingresado un valor válido. Volviendo al menú...\n");
         }
 
-    } //Fin de la función anadirTelevisor
-
-
+    } //Fin de la función anadirTelevisor. Opción 2 del menú
 
     private void anadirMovil() throws ExcepcionAnadirMovil{
         try{
@@ -162,7 +160,7 @@ public class Menu {
                 System.out.print("Ingrese el precio del móvil: ");
                 double precioMovil = scanner.nextDouble();
                 if(precioMovil<0){
-                    throw new ExcepcionAnadirMovil("El precio no puede ser negativo. Volviendo al menú...\n");
+                    throw new ExcepcionAnadirMovil("El precio no puede ser negativo. Volviendo al menú...\n\n");
                 }
 
                 System.out.print("Ingrese el nombre del móvil: ");
@@ -174,9 +172,9 @@ public class Menu {
                 System.out.print("Ingrese el tamaño de la RAM del móvil (en GB): ");
                 int tamanoRamMovil = scanner.nextInt();
                 if(tamanoRamMovil<0){
-                    throw new ExcepcionAnadirMovil("El tamaño de la RAM no puede ser negativo. Volviendo al menú...\n");
+                    throw new ExcepcionAnadirMovil("El tamaño de la RAM no puede ser negativo. Volviendo al menú...\n\n");
                 } else if(tamanoRamMovil==0){
-                    throw new ExcepcionAnadirMovil("El tamaño de la RAM no puede ser 0. Volviendo al menú...\n");
+                    throw new ExcepcionAnadirMovil("El tamaño de la RAM no puede ser 0. Volviendo al menú...\n\n");
                 }
 
                 TipoSistemaOperativo tipoSistemaOperativoMovil = TipoSistemaOperativo.valueOf(sistemaOperativoMovil);
@@ -189,19 +187,15 @@ public class Menu {
                 operaciones.agregarMovil(precioMovil, marcaMovil, nombreMovil, tipoSistemaOperativoMovil, tamanoRamMovil);
 
             } else{
-                throw new ExcepcionAnadirMovil("La marca ingresada no está registrada. Volviendo al menú...\n");
+                throw new ExcepcionAnadirMovil("La marca ingresada no está registrada. Volviendo al menú...\n\n");
             }
 
         }catch (ExcepcionAnadirMovil e){
-            throw new ExcepcionAnadirMovil("Error al añadir el movil: " + e.getMessage());
+            throw new ExcepcionAnadirMovil("\nError al añadir el movil: " + e.getMessage());
         }catch(Exception e){
-            System.out.print("Error, no ha ingresado un valor válido. Volviendo al menú...\n");
+            System.out.println("\nError, no ha ingresado un valor válido. Volviendo al menú...\n");
         }
-    } //Fin de la función anadirMovil
-
-
-
-
+    } //Fin de la función anadirMovil. Opción 3 del menú
 
     private void buscarMarca() throws ExcepcionBuscarMarca{
         try{
@@ -214,26 +208,22 @@ public class Menu {
             if(operaciones.listaMarcas.stream().anyMatch(marca -> marca.getNombre().equals(nombreMarcaBuscar) && marca.getPais().equals(paisMarcaBuscar))){
                 operaciones.busquedaMarca(nombreMarcaBuscar,paisMarcaBuscar);
             } else{
-                throw new ExcepcionBuscarMarca("La marca ingresada no está registrada. Volviendo al menú...\n");
+                throw new ExcepcionBuscarMarca("La marca ingresada no está registrada. Volviendo al menú...\n\n");
             }
 
         } catch (ExcepcionBuscarMarca e){
-            throw new ExcepcionBuscarMarca("Error al buscar la marca: " + e.getMessage());
+            throw new ExcepcionBuscarMarca("\nError al buscar la marca: " + e.getMessage());
         } catch (Exception e){
-            System.out.print("Error, no ha ingresado un valor válido. Volviendo al menú...\n");
+            System.out.println("\nError, no ha ingresado un valor válido. Volviendo al menú...\n");
         }
-    } //Fin de la función buscarMarca
-
-
-
-
+    } //Fin de la función buscarMarca. Opción 4 del menú
 
     private void buscarTelevisor() throws ExcepcionBuscarTelevisor{
         try{
             System.out.print("Ingrese el precio del televisor a buscar: ");
             double precioTelevisorBuscar = scanner.nextDouble();
             if(precioTelevisorBuscar<0){
-                throw new ExcepcionBuscarTelevisor("El precio no puede ser negativo. Volviendo al menú...\n");
+                throw new ExcepcionBuscarTelevisor("El precio no puede ser negativo. Volviendo al menú...\n\n");
             }
 
             System.out.print("Ingrese el nombre de la marca del televisor a buscar: ");
@@ -252,37 +242,33 @@ public class Menu {
             String pantallaTelevisorBuscar = scanner.next().toUpperCase().trim();
             TipoPantalla tipoPantallaTelevisorBuscar = TipoPantalla.valueOf(pantallaTelevisorBuscar);
             if(tipoPantallaTelevisorBuscar != TipoPantalla.LED && tipoPantallaTelevisorBuscar!=TipoPantalla.OLED && tipoPantallaTelevisorBuscar != TipoPantalla.QLED){
-                throw new ExcepcionBuscarTelevisor("El tipo de pantalla ingresado no es válido. Volviendo al menú...\n");
+                throw new ExcepcionBuscarTelevisor("El tipo de pantalla ingresado no es válido. Volviendo al menú...\n\n");
             }
 
             System.out.print("Ingrese el tamaño en pulgadas del televisor a buscar: ");
             int tamanoPulgadasTelevisorBuscar = scanner.nextInt();
             if(tamanoPulgadasTelevisorBuscar<0){
-                throw new ExcepcionBuscarTelevisor("El tamaño en pulgadas no puede ser negativo. Volviendo al menú...\n");
+                throw new ExcepcionBuscarTelevisor("El tamaño en pulgadas no puede ser negativo. Volviendo al menú...\n\n");
             } else if(tamanoPulgadasTelevisorBuscar==0){
-                throw new ExcepcionBuscarTelevisor("El tamaño en pulgadas del televisor no puede ser 0. Volviendo al menú...\n");
+                throw new ExcepcionBuscarTelevisor("El tamaño en pulgadas del televisor no puede ser 0. Volviendo al menú...\n\n");
             }
 
             operaciones.encontrarTelevisor(precioTelevisorBuscar, marcaTelevisorBuscar, nombreTelevisorBuscar, tipoPantallaTelevisorBuscar, tamanoPulgadasTelevisorBuscar);
 
         } catch (ExcepcionBuscarTelevisor e){
-            throw new ExcepcionBuscarTelevisor("Error al buscar el televisor: " + e.getMessage());
+            throw new ExcepcionBuscarTelevisor("\nError al buscar el televisor: " + e.getMessage());
         } catch (Exception e) {
-            System.out.print("Error general en función buscarTelevisor. Volviendo al menú...\n");
+            System.out.println("\nError general en función buscarTelevisor. Volviendo al menú...\n");
         }
 
-    } //Fin de la función buscarTelevisor
-
-
-
-
+    } //Fin de la función buscarTelevisor. Opción 5 del menú
 
     private void buscarMovil() throws ExcepcionBuscarMovil{
         try{
             System.out.print("Ingrese el precio del móvil a buscar: ");
             double precioMovilBuscar = scanner.nextDouble();
             if(precioMovilBuscar<0){
-                throw new ExcepcionBuscarMovil("El precio no puede ser negativo. Volviendo al menú...\n");
+                throw new ExcepcionBuscarMovil("El precio no puede ser negativo. Volviendo al menú...\n\n");
             }
 
             scanner.nextLine(); //Limpiar buffer
@@ -302,59 +288,52 @@ public class Menu {
             String sistemaOperativoMovilBuscar = scanner.nextLine().toUpperCase().trim();
             TipoSistemaOperativo tipoSistemaOperativoMovilBuscar = TipoSistemaOperativo.valueOf(sistemaOperativoMovilBuscar);
             if(tipoSistemaOperativoMovilBuscar!= TipoSistemaOperativo.Android && tipoSistemaOperativoMovilBuscar != TipoSistemaOperativo.iOS){
-                throw new ExcepcionBuscarMovil("El sistema operativo ingresado no es válido. Volviendo al menú...\n");
+                throw new ExcepcionBuscarMovil("El sistema operativo ingresado no es válido. Volviendo al menú...\n\n");
             }
 
             System.out.print("Ingrese el tamaño de la RAM del móvil a buscar (en GB): ");
             int tamanoRamMovilBuscar = scanner.nextInt();
             if(tamanoRamMovilBuscar<0){
-                throw new ExcepcionBuscarMovil("El tamaño de la RAM no puede ser negativo. Volviendo al menú...\n");
+                throw new ExcepcionBuscarMovil("El tamaño de la RAM no puede ser negativo. Volviendo al menú...\n\n");
             } else if (tamanoRamMovilBuscar == 0){
-                throw new ExcepcionBuscarMovil("El tamaño de la RAM no puede ser 0. VOlviendo al menú...\n");
+                throw new ExcepcionBuscarMovil("El tamaño de la RAM no puede ser 0. VOlviendo al menú...\n\n");
             }
 
             operaciones.busquedaMovil(precioMovilBuscar, marcaMovilBuscar, nombreMovilBuscar, tipoSistemaOperativoMovilBuscar, tamanoRamMovilBuscar);
 
         } catch( ExcepcionBuscarMovil e){
-            throw new ExcepcionBuscarMovil("Error al buscar el movil: " + e.getMessage());
+            throw new ExcepcionBuscarMovil("\nError al buscar el movil: " + e.getMessage());
         }
         catch (Exception e) {
-            System.out.print("Error en función buscarMovil. Volviendo al menú...\n");
+            System.out.println("\nError en función buscarMovil. Volviendo al menú...\n");
         }
 
-    } //Fin de la función buscarMovil
-
-
-
-
+    } //Fin de la función buscarMovil. Opción 6 del menú
 
     private void listarMarcas() throws ExcepcionListarMarcas {
-        if(operaciones.listaMarcas.isEmpty()){
-            throw new ExcepcionListarMarcas("No hay marcas registradas.\n");
-        } else{
-            operaciones.mostrarMarcas();
+        try{
+            if(operaciones.listaMarcas.isEmpty()){
+                throw new ExcepcionListarMarcas("No hay marcas registradas.\n\n");
+            } else{
+                operaciones.mostrarMarcas();
+            }
+        } catch (ExcepcionListarMarcas e){
+            throw new ExcepcionListarMarcas("\nError al listar las marcas: " + e.getMessage());
         }
-    } //Fin de la función listarMarcas
 
-
-
-
+    } //Fin de la función listarMarcas. Opción 7 del menú
 
     private void listarArticulos() throws ExcepcionListarArticulos{
         try{
 
             if(operaciones.listaArticulos.isEmpty()){
-                throw new ExcepcionListarArticulos("No hay artículos registrados.\n");
+                throw new ExcepcionListarArticulos("No hay artículos registrados.\n\n");
             } else{
                 operaciones.mostrarArticulos();
             }
         }catch(ExcepcionListarArticulos e){
-            throw new ExcepcionListarArticulos("Error al listar los artículos: " + e.getMessage());
+            throw new ExcepcionListarArticulos("\nError al listar los artículos: " + e.getMessage());
         }
-    } //Fin de la función listarArticulos
-
-
-
-
+    } //Fin de la función listarArticulos. Opción 8 del menú
 
 } //Fin de la clase Menu
