@@ -14,16 +14,19 @@ public class Operaciones {
     public void agregarMarca(String nombreMarca, String paisMarca, int facturacionMarca){
         Marca marca = new Marca(nombreMarca, paisMarca, facturacionMarca);
         listaMarcas.add(marca);
+        System.out.print("La marca ha sido agregada correctamente.\n");
     }
 
     public void agregarTelevisor(double precioTelevisor, Marca marcaTelevisor, String nombreTelevisor, TipoPantalla tipoPantallaTelevisor, int tamanoPulgadasTelevisor){
         Televisor televisor = new Televisor(precioTelevisor, marcaTelevisor, nombreTelevisor, tipoPantallaTelevisor, tamanoPulgadasTelevisor);
         listaArticulos.add(televisor);
+        System.out.print("El televisor ha sido agregado correctamente.\n");
     }
 
     public void agregarMovil(double precioMovil, Marca marcaMovil, String nombreMovil, TipoSistemaOperativo tipoSistemaOperativoMovil, int tamanoRamMovil){
         Movil movil = new Movil(precioMovil, marcaMovil, nombreMovil, tipoSistemaOperativoMovil, tamanoRamMovil);
         listaArticulos.add(movil);
+        System.out.print("El móvil ha sido agregado correctamente.\n");
     }
 
     public void busquedaMarca(String nombreMarcaBuscar, String paisMarcaBuscar){
