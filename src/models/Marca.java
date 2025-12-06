@@ -26,7 +26,9 @@ public class Marca {
 
     @Override
     public String toString(){
-        return "\n Marca: " + getNombre() + "\n Pais: " + getPais() + "\n Facturacion: " + getFacturacion();
+        return  "Marca: " + getNombre() + "\n " +
+                "Pais: " + getPais() + "\n" +
+                "Facturacion: " + getFacturacion();
     }
 
 
