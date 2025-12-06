@@ -1,0 +1,97 @@
+@startuml
+' Diagrama de clases del proyecto
+
+' Clases principales
+class Menu {
+  - scanner : Scanner
+  - salir : boolean
+  + mostrarMenu() : void
+  + anadirMarca() : void
+  + anadirTelevisor() : void
+  + anadirMovil() : void
+  + buscarMarca() : void
+  + buscarTelevisor() : void
+  + buscarMovil() : void
+  + listarMarcas() : void
+  + listarArticulos() : void
+}
+
+class Operaciones {
+  + listaArticulos : ArrayList<Dispositivo>
+  + listaMarcas : ArrayList<Marca>
+  + agregarMarca(nombre : String, pais : String, facturacion : int) : void
+  + agregarTelevisor(precio : double, marca : Marca, nombre : String, tipoPantalla : TipoPantalla, tamano : int) : void
+  + agregarMovil(precio : double, marca : Marca, nombre : String, tipoSO : TipoSistemaOperativo, ram : int) : void
+  + busquedaMarca(nombre : String, pais : String) : void
+  + encontrarTelevisor(precio : double, marca : Marca, nombre : String, tipoPantalla : TipoPantalla, tamano : int) : void
+  + busquedaMovil(precio : double, marca : Marca, nombre : String, tipoSO : TipoSistemaOperativo, ram : int) : void
+  + mostrarMarcas() : void
+  + mostrarArticulos() : void
+}
+
+' Clases de modelo
+class Marca {
+  - nombre : String
+  - pais : String
+  - facturacion : int
+  + getNombre() : String
+  + getPais() : String
+  + getFacturacion() : int
+}
+
+abstract class Dispositivo {
+  - precio : double
+  - marca : Marca
+  - nombre : String
+  + getPrecio() : double
+  + getMarca() : Marca
+  + getNombre() : String
+}
+
+class Televisor extends Dispositivo {
+  - tipoPantalla : TipoPantalla
+  - tamanoPulgadas : int
+  + getTipoPantalla() : TipoPantalla
+  + getTamanoPulgadas() : int
+}
+
+class Movil extends Dispositivo {
+  - tipoSistemaOperativo : TipoSistemaOperativo
+  - tamanoRam : int
+  + getTipoSistemaOperativo() : TipoSistemaOperativo
+  + getTamanoRam() : int
+}
+
+' Enumeraciones
+enum TipoPantalla {
+  LED
+  OLED
+  LCD
+}
+
+enum TipoSistemaOperativo {
+  Android
+  iOS
+}
+
+' Excepciones personalizadas
+class ExcepcionAnadirMarca extends Exception
+class ExcepcionAnadirMovil extends Exception
+class ExcepcionAnadirTelevisor extends Exception
+class ExcepcionBuscarMarca extends Exception
+class ExcepcionBuscarMovil extends Exception
+class ExcepcionBuscarTelevisor extends Exception
+class ExcepcionListarMarcas extends Exception
+class ExcepcionListarArticulos extends Exception
+class ExcepcionMostrarMenu extends Exception
+
+' Relaciones
+Menu --> Operaciones
+Operaciones --> Dispositivo
+Dispositivo <|-- Televisor
+Dispositivo <|-- Movil
+Operaciones --> Marca
+Televisor --> TipoPantalla
+Movil --> TipoSistemaOperativo
+
+@enduml

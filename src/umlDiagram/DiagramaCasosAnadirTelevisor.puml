@@ -1,0 +1,16 @@
+@startuml
+left to right direction
+
+actor Usuario as user
+
+usecase "Añadir Televisor" as AnadirTelevisor
+usecase "Validar Marca" as ValidarMarca
+usecase "Registrar Televisor" as RegistrarTelevisor
+usecase "Mostrar Mensaje de Error" as MostrarError
+
+user --> AnadirTelevisor
+AnadirTelevisor --> ValidarMarca
+AnadirTelevisor --> RegistrarTelevisor
+AnadirTelevisor --> MostrarError : <<include>>
+
+@enduml
