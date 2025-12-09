@@ -3,7 +3,7 @@ autonumber
 
 actor Usuario as user
 participant "Menu" as menu
-participant "OperacionesIpml" as operaciones
+participant "OperacionesImpl" as operaciones
 
 user -> menu: Seleccionar "Añadir Televisor"
 menu -> user: Solicitar datos del televisor
