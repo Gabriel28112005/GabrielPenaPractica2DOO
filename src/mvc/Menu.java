@@ -15,7 +15,7 @@ public class Menu {
     public void mostrarMenu(){
         while (!salir){
             try{
-                System.out.print("Gestionamos un catálogo de televisores y móviles. Tenemos las siguientes opciones:\n");
+                System.out.print("Gestionamos un catálogo de marcas, televisores y móviles. Tenemos las siguientes opciones:\n");
                 System.out.print(" 1. Añadir Marca\n");
                 System.out.print(" 2. Añadir Televisior\n");
                 System.out.print(" 3. Añadir Móvil\n");
