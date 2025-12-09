@@ -14,19 +14,19 @@ public class Operaciones {
     public void agregarMarca(String nombreMarca, String paisMarca, int facturacionMarca){
         Marca marca = new Marca(nombreMarca, paisMarca, facturacionMarca);
         listaMarcas.add(marca);
-        System.out.print("La marca ha sido agregada correctamente.\n");
+        System.out.println("\nLa marca ha sido agregada correctamente. Volviendo al menú...\n");
     }
 
     public void agregarTelevisor(double precioTelevisor, Marca marcaTelevisor, String nombreTelevisor, TipoPantalla tipoPantallaTelevisor, int tamanoPulgadasTelevisor){
         Televisor televisor = new Televisor(precioTelevisor, marcaTelevisor, nombreTelevisor, tipoPantallaTelevisor, tamanoPulgadasTelevisor);
         listaArticulos.add(televisor);
-        System.out.print("El televisor ha sido agregado correctamente.\n");
+        System.out.println("\nEl televisor ha sido agregado correctamente. Volviendo al menú...\n");
     }
 
     public void agregarMovil(double precioMovil, Marca marcaMovil, String nombreMovil, TipoSistemaOperativo tipoSistemaOperativoMovil, int tamanoRamMovil){
         Movil movil = new Movil(precioMovil, marcaMovil, nombreMovil, tipoSistemaOperativoMovil, tamanoRamMovil);
         listaArticulos.add(movil);
-        System.out.print("El móvil ha sido agregado correctamente.\n");
+        System.out.println("\nEl móvil ha sido agregado correctamente. Volviendo al menú...\n");
     }
 
     public void busquedaMarca(String nombreMarcaBuscar, String paisMarcaBuscar){
@@ -34,7 +34,7 @@ public class Operaciones {
                 .filter(marca -> marca.getNombre().equals(nombreMarcaBuscar) && marca.getPais().equals(paisMarcaBuscar))
                 .findFirst()
                 .orElse(null);
-        System.out.print("Marca encontrada:\n" + marcaBuscada + "\n");
+        System.out.println("\nMarca encontrada:\n" + marcaBuscada + "\nVolviendo al ménu...\n\n");
     }
 
     public void encontrarTelevisor(double precioTelevisorBuscar, Marca marcaTelevisorBuscar, String nombreTelevisorBuscar, TipoPantalla tipoPantallaTelevisorBuscar, int tamanoPulgadasTelevisorBuscar) throws ExcepcionBuscarTelevisor {
@@ -50,9 +50,9 @@ public class Operaciones {
                 .orElse(null);
 
         if(televisorBuscado != null){
-            System.out.print("Televisor encontrado:\n" + televisorBuscado + "\n");
+            System.out.println("\nTelevisor encontrado:\n" + televisorBuscado + "\n");
         } else{
-            throw new ExcepcionBuscarTelevisor("El televisor ingresado no está registrado. Volviendo al menú...\n");
+            throw new ExcepcionBuscarTelevisor("El televisor ingresado no está registrado. Volviendo al menú...\n\n");
         }
     }
 
@@ -60,23 +60,28 @@ public class Operaciones {
         Movil movilBuscado = new Movil(precioMovilBuscar, marcaMovilBuscar, nombreMovilBuscar, tipoSistemaOperativoMovilBuscar, tamanoRamMovilBuscar);
 
         if(listaArticulos.contains(movilBuscado)){
-            System.out.print("Móvil encontrado:\n" + movilBuscado + "\n");
+            System.out.println("\nMóvil encontrado:\n" + movilBuscado + "\n");
         } else{
-            throw new ExcepcionBuscarMovil("El móvil ingresado no está registrado. Volviendo al menú...\n");
+            throw new ExcepcionBuscarMovil("el móvil ingresado no está registrado. Volviendo al menú...\n\n");
         }
 
     }
 
     public void mostrarMarcas(){
         listaMarcas.sort(Comparator.comparing(Marca::getFacturacion).reversed()); //Ordenar listaMarcas por facturación de forma descendente
-        System.out.println("Listado de marcas registradas:\n");
-        listaMarcas.stream().forEach(marca -> System.out.print(marca + "\n"));
+        System.out.println("\nListado de marcas registradas:");
+        listaMarcas.stream().forEach(marca -> System.out.println(marca));
+        System.out.print("\nVolviendo al menú...\n\n");
     }
 
     public void mostrarArticulos(){
-        listaArticulos.sort(Comparator.comparing(Dispositivo::getPrecio).reversed()); //Ordenar listaArticulos por precio de forma ascendente
-        System.out.print("Listado de artículos registrados:\n");
-        listaArticulos.stream().forEach(articulo -> System.out.print(articulo + "\n"));
+        listaArticulos.sort(Comparator
+                .comparing((Dispositivo dispositivo) -> dispositivo.getMarca().getNombre())
+                .thenComparing(Dispositivo::getPrecio)
+                .thenComparing(Dispositivo::getNombre)); //Ordenar listaArticulos por precio de forma ascendente
+        System.out.println("\nListado de artículos registrados:");
+        listaArticulos.stream().forEach(articulo -> System.out.println(articulo));
+        System.out.print("\nVolviendo al menú...\n\n");
     }
 
 } //Fin de la clase Operaciones

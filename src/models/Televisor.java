@@ -20,9 +20,9 @@ public class Televisor extends Dispositivo{
 
     @Override
     public String toString() {
-        return "Movil{\n" +
-                " Marca: " + getMarca() + "\n" +
+        return "Televisor{\n" +
                 " Nombre: " + getNombre() + "\n" +
+                " Marca:" + getMarca().getNombre() + "\n" +
                 " Precio: " + getPrecio() + "€\n" +
                 " Tipo de pantalla: " + getTipoPantalla() + "\n" +
                 " Tamaño de pulgadas: " + getTamanoPulgadas() + "\n" +
