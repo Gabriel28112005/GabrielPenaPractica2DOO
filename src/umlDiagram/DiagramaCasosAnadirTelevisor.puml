@@ -11,6 +11,6 @@ usecase "Mostrar Mensaje de Error" as MostrarError
 user --> AnadirTelevisor
 AnadirTelevisor --> ValidarMarca
 AnadirTelevisor --> RegistrarTelevisor
-AnadirTelevisor --> MostrarError : <<include>>
+AnadirTelevisor --> MostrarError
 
 @enduml

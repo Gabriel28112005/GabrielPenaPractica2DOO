@@ -1,10 +1,11 @@
 @startuml
-' Diagrama de clases del proyecto
+' Diagrama de clases del proyecto actualizado
 
 ' Clases principales
 class Menu {
   - scanner : Scanner
   - salir : boolean
+  - operaciones : Operaciones
   + mostrarMenu() : void
   + anadirMarca() : void
   + anadirTelevisor() : void
@@ -16,9 +17,22 @@ class Menu {
   + listarArticulos() : void
 }
 
-class Operaciones {
+interface Operaciones {
   + listaArticulos : ArrayList<Dispositivo>
   + listaMarcas : ArrayList<Marca>
+  + agregarMarca(nombre : String, pais : String, facturacion : int) : void
+  + agregarTelevisor(precio : double, marca : Marca, nombre : String, tipoPantalla : TipoPantalla, tamano : int) : void
+  + agregarMovil(precio : double, marca : Marca, nombre : String, tipoSO : TipoSistemaOperativo, ram : int) : void
+  + busquedaMarca(nombre : String, pais : String) : void
+  + encontrarTelevisor(precio : double, marca : Marca, nombre : String, tipoPantalla : TipoPantalla, tamano : int) : void
+  + busquedaMovil(precio : double, marca : Marca, nombre : String, tipoSO : TipoSistemaOperativo, ram : int) : void
+  + mostrarMarcas() : void
+  + mostrarArticulos() : void
+}
+
+class OperacionesImpl implements Operaciones {
+  - listaArticulos : ArrayList<Dispositivo>
+  - listaMarcas : ArrayList<Marca>
   + agregarMarca(nombre : String, pais : String, facturacion : int) : void
   + agregarTelevisor(precio : double, marca : Marca, nombre : String, tipoPantalla : TipoPantalla, tamano : int) : void
   + agregarMovil(precio : double, marca : Marca, nombre : String, tipoSO : TipoSistemaOperativo, ram : int) : void
@@ -66,7 +80,7 @@ class Movil extends Dispositivo {
 enum TipoPantalla {
   LED
   OLED
-  LCD
+  QLED
 }
 
 enum TipoSistemaOperativo {
@@ -87,10 +101,11 @@ class ExcepcionMostrarMenu extends Exception
 
 ' Relaciones
 Menu --> Operaciones
-Operaciones --> Dispositivo
+Operaciones <|.. OperacionesImpl
+OperacionesImpl --> Dispositivo
 Dispositivo <|-- Televisor
 Dispositivo <|-- Movil
-Operaciones --> Marca
+OperacionesImpl --> Marca
 Televisor --> TipoPantalla
 Movil --> TipoSistemaOperativo
 

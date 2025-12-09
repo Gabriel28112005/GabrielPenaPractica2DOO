@@ -3,11 +3,11 @@ autonumber
 
 actor Usuario as user
 participant "Menu" as menu
-participant "Operaciones" as operaciones
+participant "OperacionesIpml" as operaciones
 
 user -> menu: Seleccionar "Añadir Televisor"
 menu -> user: Solicitar datos del televisor
-user --> menu: Ingresar datos (precio, marca, nombre, tipo de pantalla, tamaño)
+user --> menu: Ingresar datos (precio, marca, nombre, tipo de pantalla, pulgadas)
 
 menu -> operaciones: Validar marca
 operaciones --> menu: Marca válida
