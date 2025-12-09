@@ -70,8 +70,8 @@ enum TipoPantalla {
 }
 
 enum TipoSistemaOperativo {
-  Android
-  iOS
+  ANDROID
+  IOS
 }
 
 ' Excepciones personalizadas
