@@ -1,15 +1,16 @@
-package serviceImpl;
+package mvc;
 
 import java.util.Scanner;
 
 import exceptions.*;
 import models.*;
+import serviceImpl.*;
 import service.*;
 
 public class Menu {
     Scanner scanner = new Scanner(System.in);
     boolean salir = false;
-    Operaciones operaciones = new Operaciones();
+    Operaciones operaciones = new OperacionesImpl();
 
     public void mostrarMenu(){
         while (!salir){
@@ -81,7 +82,7 @@ public class Menu {
             String nombreMarca = scanner.nextLine().toLowerCase().trim(); //Se guarda el String ingresado por el usuario en minúsculas y sin espacios.
 
             // Verificar si la marca ya existe
-            if (operaciones.listaMarcas.stream().anyMatch(marca -> marca.getNombre().equals(nombreMarca))) {
+            if (operaciones.getListaMarcas().stream().anyMatch(marca -> marca.getNombre().equals(nombreMarca))) {
                 throw new ExcepcionAnadirMarca("la marca ya está registrada.\n\n");
             }
 
@@ -108,7 +109,7 @@ public class Menu {
             System.out.print("Ingrese el nombre de la marca del televisor: ");
             String nombreMarcaTelevisor = scanner.nextLine().toLowerCase().trim();
 
-            if(operaciones.listaMarcas.stream().anyMatch(marca -> marca.getNombre().equals(nombreMarcaTelevisor))){
+            if(operaciones.getListaMarcas().stream().anyMatch(marca -> marca.getNombre().equals(nombreMarcaTelevisor))){
                 System.out.print("Ingrese el precio del televisor: ");
                 double precioTelevisor = scanner.nextDouble();
                 if(precioTelevisor<0){
@@ -133,7 +134,7 @@ public class Menu {
                 }
 
                 TipoPantalla tipoPantallaTelevisor = TipoPantalla.valueOf(pantallaTelevisor);
-                Marca marcaTelevisor = operaciones.listaMarcas.stream()
+                Marca marcaTelevisor = operaciones.getListaMarcas().stream()
                         .filter(marca -> marca.getNombre().equals(nombreMarcaTelevisor))
                         .findFirst()
                         .orElse(null);
@@ -158,7 +159,7 @@ public class Menu {
             System.out.print("Ingrese el nombre de la marca del móvil: ");
             String nombreMarcaMovil = scanner.nextLine().toLowerCase().trim();
 
-            if(operaciones.listaMarcas.stream().anyMatch(marca -> marca.getNombre().equals(nombreMarcaMovil))) {
+            if(operaciones.getListaMarcas().stream().anyMatch(marca -> marca.getNombre().equals(nombreMarcaMovil))) {
                 System.out.print("Ingrese el precio del móvil: ");
                 double precioMovil = scanner.nextDouble();
                 if(precioMovil<0){
@@ -181,7 +182,7 @@ public class Menu {
 
                 TipoSistemaOperativo tipoSistemaOperativoMovil = TipoSistemaOperativo.valueOf(sistemaOperativoMovil);
 
-                Marca marcaMovil = operaciones.listaMarcas.stream()
+                Marca marcaMovil = operaciones.getListaMarcas().stream()
                         .filter(marca -> marca.getNombre().equals(nombreMarcaMovil))
                         .findFirst()
                         .orElse(null);
@@ -207,7 +208,7 @@ public class Menu {
             System.out.print("Ingrese el país de la marca: ");
             String paisMarcaBuscar = scanner.nextLine().toLowerCase().trim();
 
-            if(operaciones.listaMarcas.stream().anyMatch(marca -> marca.getNombre().equals(nombreMarcaBuscar) && marca.getPais().equals(paisMarcaBuscar))){
+            if(operaciones.getListaMarcas().stream().anyMatch(marca -> marca.getNombre().equals(nombreMarcaBuscar) && marca.getPais().equals(paisMarcaBuscar))){
                 operaciones.busquedaMarca(nombreMarcaBuscar,paisMarcaBuscar);
             } else{
                 throw new ExcepcionBuscarMarca("la marca ingresada no está registrada. Volviendo al menú...\n\n");
@@ -230,7 +231,7 @@ public class Menu {
 
             System.out.print("Ingrese el nombre de la marca del televisor a buscar: ");
             String nombreMarcaBuscar = scanner.nextLine();
-            Marca marcaTelevisorBuscar = operaciones.listaArticulos.stream()
+            Marca marcaTelevisorBuscar = operaciones.getListaArticulos().stream()
                     .filter(articulo -> articulo instanceof Televisor && articulo.getMarca().getNombre().equals(nombreMarcaBuscar))
                     .map(articulo -> articulo.getMarca())
                     .findFirst()
@@ -281,7 +282,7 @@ public class Menu {
 
             System.out.print("Ingrese el nombre de la marca del móvil a buscar: ");
             String nombreMarcaBuscar = scanner.nextLine();
-            Marca marcaMovilBuscar = operaciones.listaArticulos.stream()
+            Marca marcaMovilBuscar = operaciones.getListaArticulos().stream()
                     .filter(articulo -> articulo instanceof Movil && articulo.getMarca().getNombre().equals(nombreMarcaBuscar))
                     .map(articulo -> articulo.getMarca())
                     .findFirst()
@@ -323,7 +324,7 @@ public class Menu {
 
     private void listarMarcas() throws ExcepcionListarMarcas {
         try{
-            if(operaciones.listaMarcas.isEmpty()){
+            if(operaciones.getListaMarcas().isEmpty()){
                 throw new ExcepcionListarMarcas("no hay marcas registradas.\n\n");
             } else{
                 operaciones.mostrarMarcas();
@@ -337,7 +338,7 @@ public class Menu {
     private void listarArticulos() throws ExcepcionListarArticulos{
         try{
 
-            if(operaciones.listaArticulos.isEmpty()){
+            if(operaciones.getListaArticulos().isEmpty()){
                 throw new ExcepcionListarArticulos("no hay artículos registrados.\n\n");
             } else{
                 operaciones.mostrarArticulos();
