@@ -7,10 +7,12 @@ usecase "Añadir Televisor" as AnadirTelevisor
 usecase "Validar Marca" as ValidarMarca
 usecase "Registrar Televisor" as RegistrarTelevisor
 usecase "Mostrar Mensaje de Error" as MostrarError
+usecase "Ingresar datos del Televisor" as IngresarDatos
 
 user --> AnadirTelevisor
-AnadirTelevisor --> ValidarMarca
-ValidarMarca --> RegistrarTelevisor
-ValidarMarca --> MostrarError
+AnadirTelevisor --> IngresarDatos
+IngresarDatos --> ValidarMarca
+ValidarMarca --> RegistrarTelevisor : si la marca está registrada
+ValidarMarca --> MostrarError : si la marca no está registrada
 
 @enduml
