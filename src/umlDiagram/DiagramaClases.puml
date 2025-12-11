@@ -101,12 +101,8 @@ class ExcepcionMostrarMenu extends Exception
 
 ' Relaciones
 Menu --> Operaciones
-Operaciones <|.. OperacionesImpl
-OperacionesImpl --> Dispositivo
-Dispositivo <|-- Televisor
-Dispositivo <|-- Movil
-OperacionesImpl --> Marca
+OperacionesImpl o-- Dispositivo
+OperacionesImpl o-- Marca
 Televisor --> TipoPantalla
 Movil --> TipoSistemaOperativo
-
 @enduml

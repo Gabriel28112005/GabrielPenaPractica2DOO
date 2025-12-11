@@ -3,19 +3,24 @@ autonumber
 
 actor Usuario as user
 participant "Menu" as menu
-participant "OperacionesImpl" as operaciones
+participant "OperacionesImpl" as operacionesImpl
+participant "Televisor" as televisor
 
-user -> menu: Seleccionar "Añadir Televisor"
-menu -> user: Solicitar datos del televisor
-user --> menu: Ingresar datos (precio, marca, nombre, tipo de pantalla, pulgadas)
+user -> menu: anadirTelevision()
+user <-- menu: Solicitar datos del televisor
+user -> menu: Ingresar datos (precio, marca, nombre, tipo de pantalla, pulgadas)
 
-menu -> operaciones: Validar marca
-operaciones --> menu: Marca válida
+menu -> operacionesImpl: Validar marca
+user <-- operacionesImpl: throw new ExcepcionAnadirTelevisor ("la marca no es válida")
+operacionesImpl --> menu: Marca válida
+menu -> operacionesImpl: agregarTelevisor()
 
-menu -> operaciones: Registrar televisor
-operaciones --> menu: Televisor registrado
+operacionesImpl -> televisor: Televisor televisor = new Televisor()
+operacionesImpl <-- televisor: televisor
+
+operacionesImpl -> operacionesImpl: listaArticulos.add(televisor)
+operacionesImpl --> menu: Televisor registrado
 
 menu -> user: Confirmar registro exitoso
-menu -> user: Mostrar mensaje de error (si ocurre)
 
 @enduml
