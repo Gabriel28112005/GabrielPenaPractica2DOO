@@ -1,4 +1,5 @@
 package models;
+import java.util.ArrayList;
 
 public class Televisor extends Dispositivo{
     private final TipoPantalla tipoPantalla;
