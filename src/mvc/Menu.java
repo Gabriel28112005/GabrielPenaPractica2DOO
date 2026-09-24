@@ -17,7 +17,7 @@ public class Menu {
             try{
                 System.out.print("Gestionamos un catálogo de marcas, televisores y móviles. Tenemos las siguientes opciones:\n");
                 System.out.print(" 1. Añadir Marca\n");
-                System.out.print(" 2. Añadir Televisior\n");
+                System.out.print(" 2. Añadir Televisor\n");
                 System.out.print(" 3. Añadir Móvil\n");
                 System.out.print(" 4. Buscar Marca\n");
                 System.out.print(" 5. Buscar Televisor\n");
@@ -122,7 +122,7 @@ public class Menu {
                 System.out.print("Ingrese el nombre del televisor: ");
                 String nombreTelevisor = scanner.nextLine().toLowerCase().trim();
 
-                System.out.print("Ingrese el tipo de pantalla del televisor (LED, OLED, QLED): ");
+                System.out.print("Ingrese el tipo de pantalla del televisor (LED, OLED, QLED, QNED): ");
                 String pantallaTelevisor = scanner.next().toUpperCase().trim();
 
                 System.out.print("Ingrese el tamaño en pulgadas del televisor: ");
@@ -166,6 +166,8 @@ public class Menu {
                     throw new ExcepcionAnadirMovil("el precio no puede ser negativo. Volviendo al menú...\n\n");
                 }
 
+                scanner.nextLine(); //Limpiar buffer
+
                 System.out.print("Ingrese el nombre del móvil: ");
                 String nombreMovil = scanner.nextLine().toLowerCase().trim();
 
@@ -196,7 +198,7 @@ public class Menu {
         }catch (ExcepcionAnadirMovil e){
             throw new ExcepcionAnadirMovil("\nError al añadir el móvil: " + e.getMessage());
         }catch(Exception e){
-            System.out.println("\nError generar al añadir el móvil al catálogo. Volviendo al menú...\n");
+            System.out.println("\nError general al añadir el móvil al catálogo. Volviendo al menú...\n");
         }
     } //Fin de la función anadirMovil. Opción 3 del menú
 
@@ -229,8 +231,10 @@ public class Menu {
                 throw new ExcepcionBuscarTelevisor("el precio no puede ser negativo. Volviendo al menú...\n\n");
             }
 
+            scanner.nextLine(); //Limpiar buffer
+
             System.out.print("Ingrese el nombre de la marca del televisor a buscar: ");
-            String nombreMarcaBuscar = scanner.nextLine();
+            String nombreMarcaBuscar = scanner.nextLine().toLowerCase().trim();
             Marca marcaTelevisorBuscar = operaciones.getListaArticulos().stream()
                     .filter(articulo -> articulo instanceof Televisor && articulo.getMarca().getNombre().equals(nombreMarcaBuscar))
                     .map(articulo -> articulo.getMarca())
@@ -240,15 +244,15 @@ public class Menu {
             System.out.print("Ingrese el nombre del televisor a buscar: ");
             String nombreTelevisorBuscar = scanner.nextLine().toLowerCase().trim();
 
-            System.out.print("Ingrese el tipo de pantalla del televisor a buscar (LED, OLED, QLED): ");
+            System.out.print("Ingrese el tipo de pantalla del televisor a buscar (LED, OLED, QLED, QNED): ");
             String pantallaTelevisorBuscar = scanner.next().toUpperCase().trim();
             if(pantallaTelevisorBuscar.isEmpty()){
                 throw new ExcepcionBuscarTelevisor("el tipo de pantalla no puede estar vacío. Volviendo al menú...\n\n");
-            } else if(!pantallaTelevisorBuscar.equals("LED") && !pantallaTelevisorBuscar.equals("OLED") && !pantallaTelevisorBuscar.equals("QLED")){
+            } else if(!pantallaTelevisorBuscar.equals("LED") && !pantallaTelevisorBuscar.equals("OLED") && !pantallaTelevisorBuscar.equals("QLED") && !pantallaTelevisorBuscar.equals("QNED")){
                 throw new ExcepcionBuscarTelevisor("ha ingresado un tipo de pantalla diferente al que se le ofrece. Volviendo al menú...\n\n");
             }
             TipoPantalla tipoPantallaTelevisorBuscar = TipoPantalla.valueOf(pantallaTelevisorBuscar);
-            if(tipoPantallaTelevisorBuscar != TipoPantalla.LED && tipoPantallaTelevisorBuscar!=TipoPantalla.OLED && tipoPantallaTelevisorBuscar != TipoPantalla.QLED){
+            if(tipoPantallaTelevisorBuscar != TipoPantalla.LED && tipoPantallaTelevisorBuscar!=TipoPantalla.OLED && tipoPantallaTelevisorBuscar != TipoPantalla.QLED && tipoPantallaTelevisorBuscar != TipoPantalla.QNED){
                 throw new ExcepcionBuscarTelevisor("el tipo de pantalla ingresado no es válido. Volviendo al menú...\n\n");
             }
 
@@ -265,7 +269,7 @@ public class Menu {
         } catch (ExcepcionBuscarTelevisor e){
             throw new ExcepcionBuscarTelevisor("\nError al buscar el televisor: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("\nError general al buscar el telévisor en el catálogo. Volviendo al menú...\n");
+            System.out.println("\nError general al buscar el televisor en el catálogo. Volviendo al menú...\n");
         }
 
     } //Fin de la función buscarTelevisor. Opción 5 del menú
@@ -281,7 +285,7 @@ public class Menu {
             scanner.nextLine(); //Limpiar buffer
 
             System.out.print("Ingrese el nombre de la marca del móvil a buscar: ");
-            String nombreMarcaBuscar = scanner.nextLine();
+            String nombreMarcaBuscar = scanner.nextLine().toLowerCase().trim();
             Marca marcaMovilBuscar = operaciones.getListaArticulos().stream()
                     .filter(articulo -> articulo instanceof Movil && articulo.getMarca().getNombre().equals(nombreMarcaBuscar))
                     .map(articulo -> articulo.getMarca())
@@ -308,16 +312,16 @@ public class Menu {
             if(tamanoRamMovilBuscar<0){
                 throw new ExcepcionBuscarMovil("el tamaño de la RAM no puede ser negativo. Volviendo al menú...\n\n");
             } else if (tamanoRamMovilBuscar == 0){
-                throw new ExcepcionBuscarMovil("el tamaño de la RAM no puede ser 0. VOlviendo al menú...\n\n");
+                throw new ExcepcionBuscarMovil("el tamaño de la RAM no puede ser 0. Volviendo al menú...\n\n");
             }
 
             operaciones.busquedaMovil(precioMovilBuscar, marcaMovilBuscar, nombreMovilBuscar, tipoSistemaOperativoMovilBuscar, tamanoRamMovilBuscar);
 
         } catch( ExcepcionBuscarMovil e){
-            throw new ExcepcionBuscarMovil("\nError al buscar el movil: " + e.getMessage());
+            throw new ExcepcionBuscarMovil("\nError al buscar el móvil: " + e.getMessage());
         }
         catch (Exception e) {
-            System.out.println("\nError general al buscar el movil en el catálogo. Volviendo al menú...\n");
+            System.out.println("\nError general al buscar el móvil en el catálogo. Volviendo al menú...\n");
         }
 
     } //Fin de la función buscarMovil. Opción 6 del menú

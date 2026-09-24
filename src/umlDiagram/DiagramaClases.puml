@@ -18,8 +18,8 @@ class Menu {
 }
 
 interface Operaciones {
-  + listaArticulos : ArrayList<Dispositivo>
-  + listaMarcas : ArrayList<Marca>
+  + getListaArticulos() : ArrayList<Dispositivo>
+  + getListaMarcas() : ArrayList<Marca>
   + agregarMarca(nombre : String, pais : String, facturacion : int) : void
   + agregarTelevisor(precio : double, marca : Marca, nombre : String, tipoPantalla : TipoPantalla, tamano : int) : void
   + agregarMovil(precio : double, marca : Marca, nombre : String, tipoSO : TipoSistemaOperativo, ram : int) : void
@@ -33,6 +33,8 @@ interface Operaciones {
 class OperacionesImpl implements Operaciones {
   - listaArticulos : ArrayList<Dispositivo>
   - listaMarcas : ArrayList<Marca>
+  + getListaArticulos() : ArrayList<Dispositivo>
+  + getListaMarcas() : ArrayList<Marca>
   + agregarMarca(nombre : String, pais : String, facturacion : int) : void
   + agregarTelevisor(precio : double, marca : Marca, nombre : String, tipoPantalla : TipoPantalla, tamano : int) : void
   + agregarMovil(precio : double, marca : Marca, nombre : String, tipoSO : TipoSistemaOperativo, ram : int) : void
@@ -51,6 +53,8 @@ class Marca {
   + getNombre() : String
   + getPais() : String
   + getFacturacion() : int
+  + equals(objeto : Object) : boolean
+  + hashCode() : int
 }
 
 abstract class Dispositivo {
@@ -60,6 +64,8 @@ abstract class Dispositivo {
   + getPrecio() : double
   + getMarca() : Marca
   + getNombre() : String
+  + equals(objeto : Object) : boolean
+  + hashCode() : int
 }
 
 class Televisor extends Dispositivo {
@@ -67,13 +73,17 @@ class Televisor extends Dispositivo {
   - tamanoPulgadas : int
   + getTipoPantalla() : TipoPantalla
   + getTamanoPulgadas() : int
+  + equals(objeto : Object) : boolean
+  + hashCode() : int
 }
 
 class Movil extends Dispositivo {
-  - tipoSistemaOperativo : TipoSistemaOperativo
-  - tamanoRam : int
-  + getTipoSistemaOperativo() : TipoSistemaOperativo
-  + getTamanoRam() : int
+  - sistemaOperativo : TipoSistemaOperativo
+  - tamanoRAM : int
+  + getSistemaOperativo() : TipoSistemaOperativo
+  + getTamanoRAM() : int
+  + equals(objeto : Object) : boolean
+  + hashCode() : int
 }
 
 ' Enumeraciones
@@ -81,6 +91,7 @@ enum TipoPantalla {
   LED
   OLED
   QLED
+  QNED
 }
 
 enum TipoSistemaOperativo {

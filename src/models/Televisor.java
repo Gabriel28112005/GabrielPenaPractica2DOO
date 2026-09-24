@@ -1,5 +1,5 @@
 package models;
-import java.util.ArrayList;
+import java.util.Objects;
 
 public class Televisor extends Dispositivo{
     private final TipoPantalla tipoPantalla;
@@ -19,11 +19,26 @@ public class Televisor extends Dispositivo{
         return tamanoPulgadas;
     }
 
+    //Dos televisores son iguales si son dispositivos iguales y tienen el mismo tipo de pantalla y el mismo tamaño en pulgadas
+    @Override
+    public boolean equals(Object objeto){
+        if(!super.equals(objeto)){
+            return false;
+        }
+        Televisor televisor = (Televisor) objeto;
+        return tipoPantalla == televisor.tipoPantalla && tamanoPulgadas == televisor.tamanoPulgadas;
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(super.hashCode(), tipoPantalla, tamanoPulgadas);
+    }
+
     @Override
     public String toString() {
         return "Televisor{\n" +
                 " Nombre: " + getNombre() + "\n" +
-                " Marca:" + getMarca().getNombre() + "\n" +
+                " Marca: " + getMarca().getNombre() + "\n" +
                 " Precio: " + getPrecio() + "€\n" +
                 " Tipo de pantalla: " + getTipoPantalla() + "\n" +
                 " Tamaño de pulgadas: " + getTamanoPulgadas() + "\n" +

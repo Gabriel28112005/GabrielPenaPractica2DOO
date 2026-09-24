@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class OperacionesImpl implements Operaciones {
-    public ArrayList<Dispositivo> listaArticulos = new ArrayList<>();
-    public ArrayList<Marca> listaMarcas = new ArrayList<>();
+    private ArrayList<Dispositivo> listaArticulos = new ArrayList<>();
+    private ArrayList<Marca> listaMarcas = new ArrayList<>();
 
     public ArrayList<Dispositivo> getListaArticulos(){
         return listaArticulos;
@@ -43,7 +43,11 @@ public class OperacionesImpl implements Operaciones {
                 .filter(marca -> marca.getNombre().equals(nombreMarcaBuscar) && marca.getPais().equals(paisMarcaBuscar))
                 .findFirst()
                 .orElse(null);
-        System.out.println("\nMarca encontrada:\n" + marcaBuscada + "\nVolviendo al ménu...\n\n");
+        if(marcaBuscada != null){
+            System.out.println("\nMarca encontrada:\n" + marcaBuscada + "\nVolviendo al menú...\n\n");
+        } else{
+            System.out.println("\nLa marca ingresada no está registrada. Volviendo al menú...\n\n");
+        }
     }
 
     // Buscar televisor por todos sus atributos
@@ -62,14 +66,14 @@ public class OperacionesImpl implements Operaciones {
         if(televisorBuscado != null){
             System.out.println("\nTelevisor encontrado:\n" + televisorBuscado + "\n");
         } else{
-            throw new ExcepcionBuscarTelevisor("El televisor ingresado no está registrado. Volviendo al menú...\n\n");
+            throw new ExcepcionBuscarTelevisor("el televisor ingresado no está registrado. Volviendo al menú...\n\n");
         }
     }
 
     public void busquedaMovil(double precioMovilBuscar, Marca marcaMovilBuscar, String nombreMovilBuscar, TipoSistemaOperativo tipoSistemaOperativoMovilBuscar, int tamanoRamMovilBuscar) throws ExcepcionBuscarMovil {
         Movil movilBuscado = new Movil(precioMovilBuscar, marcaMovilBuscar, nombreMovilBuscar, tipoSistemaOperativoMovilBuscar, tamanoRamMovilBuscar);
 
-        if(listaArticulos.contains(movilBuscado)){
+        if(listaArticulos.contains(movilBuscado)){ //contains() usa el método equals() de Movil
             System.out.println("\nMóvil encontrado:\n" + movilBuscado + "\n");
         } else{
             throw new ExcepcionBuscarMovil("el móvil ingresado no está registrado. Volviendo al menú...\n\n");
@@ -88,10 +92,10 @@ public class OperacionesImpl implements Operaciones {
         listaArticulos.sort(Comparator
                 .comparing((Dispositivo dispositivo) -> dispositivo.getMarca().getNombre())
                 .thenComparing(Dispositivo::getPrecio)
-                .thenComparing(Dispositivo::getNombre)); //Ordenar listaArticulos por precio de forma ascendente
+                .thenComparing(Dispositivo::getNombre)); //Ordenar listaArticulos por nombre de la marca, después por precio de forma ascendente y por último por nombre del artículo
         System.out.println("\nListado de artículos registrados:");
         listaArticulos.stream().forEach(articulo -> System.out.println(articulo));
         System.out.print("\nVolviendo al menú...\n\n");
     }
 
-} //Fin de la clase Operaciones
+} //Fin de la clase OperacionesImpl
